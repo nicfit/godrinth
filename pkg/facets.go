@@ -52,7 +52,7 @@ func (f facetsAnd) String() string {
 	for i := range f.Facets {
 		strs = append(strs, f.Facets[i].String())
 	}
-	return fmt.Sprintf("[[%s]]", strings.Join(strs, "],["))
+	return fmt.Sprintf("[%s]", strings.Join(strs, "],["))
 }
 
 type facetsOr struct {

@@ -64,9 +64,35 @@ type Meta struct {
 	Version       string `json:"version"`
 }
 
+type SearchResult struct {
+	Slug               string   `json:"slug"`
+	Title              string   `json:"title"`
+	Description        string   `json:"description"`
+	Categories         []string `json:"categories"`
+	ClientSide         string   `json:"client_side"`
+	ServerSide         string   `json:"server_side"`
+	ProjectType        string   `json:"project_type"`
+	Downloads          int      `json:"downloads"`
+	IconUrl            string   `json:"icon_url"`
+	Color              int      `json:"color"`
+	ThreadId           string   `json:"thread_id"`
+	MonetizationStatus string   `json:"monetization_status"`
+	ProjectId          string   `json:"project_id"`
+	Author             string   `json:"author"`
+	DisplayCategories  []string `json:"display_categories"`
+	Versions           []string `json:"versions"`
+	Follows            int      `json:"follows"`
+	DateCreated        string   `json:"date_created"`
+	DateModified       string   `json:"date_modified"`
+	LatestVersion      string   `json:"latest_version"`
+	License            string   `json:"license"`
+	Gallery            []string `json:"gallery"`
+	FeaturedGallery    string   `json:"featured_gallery"`
+}
+
 type SearchResults struct {
-	Hits      []Project `json:"hits"`
-	Offset    int       `json:"offset"`
-	Limit     int       `json:"limit"`
-	TotalHits int       `json:"total_hits"`
+	Hits      []SearchResult `json:"hits"`
+	Offset    int            `json:"offset"`
+	Limit     int            `json:"limit"`
+	TotalHits int            `json:"total_hits"`
 }

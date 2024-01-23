@@ -21,9 +21,22 @@ func main() {
 	}
 	fmt.Println("Metadata:", meta)
 
+	// FIXME
+	projects, err := godrinth.SearchProject(ctx, os.Args[1], &godrinth.SearchOptions{
+		Facets: "[[\"project_type=mod\"]]",
+		Index:  "relevance",
+		Offset: 0,
+		Limit:  20,
+	})
+	if err != nil {
+		log.Panicln(err)
+	}
+	fmt.Println("Projects:", projects)
+
 	project, err := godrinth.GetProject(ctx, os.Args[1])
 	if err != nil {
 		log.Panicln(err)
 	}
 	fmt.Println("Project:", project.Slug)
+
 }

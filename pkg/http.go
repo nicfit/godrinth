@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"strconv"
 )
 
 type HttpError struct {
@@ -89,10 +91,37 @@ type SearchOptions struct {
 
 func SearchProject(_ context.Context, query string, options *SearchOptions) (SearchResults, error) {
 	var results = SearchResults{}
-	// TODO
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%ssearch", ModrinthApiUrl), nil)
+	addHeaders(req)
+	req.URL.RawQuery = url.Values{
+		"query":  {query},
+		"facets": {options.Facets},
+		"limit":  {strconv.Itoa(options.Limit)},
+		"offset": {strconv.Itoa(options.Offset)},
+		"index":  {options.Index},
+	}.Encode()
+
+	client := &http.Client{}
+	fmt.Println(req.URL)
+	resp, err := client.Do(req)
+	if err != nil {
+		return results, err
+	} else if resp.StatusCode != http.StatusOK {
+		return results, makeHttpError(resp)
+	}
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return results, err
+	}
+	if err := json.Unmarshal(data, &results); err != nil {
+		return results, err
+	}
+
 	return results, nil
 }
 
 func addHeaders(req *http.Request) {
-
+	req.Header.Add("User-Agent", UserAgent)
 }
