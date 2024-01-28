@@ -61,10 +61,11 @@ func TestFacetComplex(t *testing.T) {
 		MakeFacetOr(MakeFacet("version", OperandTypeGreaterThanOrEqual, "1.20"),
 			MakeFacet("version", OperandTypeNotEqual, "1.20.3")),
 		MakeFacetOr(MakeFacet("categories", OperandTypeEqual, "fabric"),
-			MakeFacet("categories", OperandTypeEqual, "quilt")),
-		MakeFacet("project_type", OperandTypeEqual, "mod"),
+			MakeFacet("categories", OperandTypeEqual, "utility")),
+		MakeFacetAnd(MakeFacet("project_type", OperandTypeEqual, "mod")),
 	)
 
-	fmt.Println(facets.String())
-
+	if facets.String() != "[[\"version>=1.20\", \"version!=1.20.3\"]],[[\"categories=fabric\", \"categories=utility\"]],[[\"project_type=mod\"]]" {
+		t.Fail()
+	}
 }

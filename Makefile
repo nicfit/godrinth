@@ -6,7 +6,7 @@ build: enums
 clean:
 	rm -rf build/
 
-test:
+test: build
 	go test ./...
 
 
@@ -28,3 +28,5 @@ go-enum:
 	curl -fsSL $(GO_ENUM_URL) -o $(GOENUM)
 	chmod 755 $(GOENUM)
 .PHONY: go-enum
+
+all: clean test
