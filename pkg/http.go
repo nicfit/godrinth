@@ -54,8 +54,8 @@ func GetMeta(_ context.Context) (Meta, error) {
 func GetProject(_ context.Context, q string) (Project, error) {
 	var project = Project{}
 
-	url := fmt.Sprintf("%sproject/%s", ModrinthApiUrl, q)
-	req, err := http.NewRequest("GET", url, nil)
+	url_q := fmt.Sprintf("%sproject/%s", ModrinthApiUrl, q)
+	req, err := http.NewRequest("GET", url_q, nil)
 	addHeaders(req)
 
 	client := &http.Client{}
@@ -93,6 +93,9 @@ func SearchProject(_ context.Context, query string, options *SearchOptions) (Sea
 	var results = SearchResults{}
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("%ssearch", ModrinthApiUrl), nil)
+	if err != nil {
+		return results, err
+	}
 	addHeaders(req)
 	req.URL.RawQuery = url.Values{
 		"query":  {query},
@@ -103,7 +106,7 @@ func SearchProject(_ context.Context, query string, options *SearchOptions) (Sea
 	}.Encode()
 
 	client := &http.Client{}
-	fmt.Println(req.URL)
+	fmt.Println(req.URL) // FIXME
 	resp, err := client.Do(req)
 	if err != nil {
 		return results, err
