@@ -15,6 +15,10 @@ var mainCommand = &cli.Command{
 		getCommand,
 		searchCommand,
 	},
+	Action: func(ctx context.Context, command *cli.Command) error {
+		fmt.Println("FIXME: TUI")
+		return nil
+	},
 }
 
 var getCommand = &cli.Command{
@@ -24,7 +28,7 @@ var getCommand = &cli.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println("Project:", project)
+		fmt.Println("Project:", godrinth.IndentedJson(project))
 
 		return nil
 	},
@@ -42,7 +46,7 @@ var searchCommand = &cli.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println("Projects:", projects)
+		fmt.Println("Projects:", godrinth.IndentedJson(projects))
 
 		if len(projects.Hits) == 0 {
 			return fmt.Errorf("no projects found for query: %s", cmd.Args().First())
@@ -60,7 +64,7 @@ func main() {
 		_, _ = fmt.Fprintln(os.Stderr, "Metadata Error:", err)
 		os.Exit(1)
 	}
-	fmt.Println("Metadata:", meta)
+	fmt.Println("Metadata:", godrinth.IndentedJson(meta))
 
 	if err := mainCommand.Run(ctx, os.Args); err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "Error:", err)
