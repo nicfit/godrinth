@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/nicfit/godrinth/pkg/ferium"
 	"os"
 
 	godrinth "github.com/nicfit/godrinth/pkg"
@@ -27,7 +28,7 @@ var mainCommand = &cli.Command{
 			Name:    "config",
 			Aliases: []string{"c"},
 			Usage:   "Load configuration from `FILE`",
-			Value:   godrinth.DEFAULT_CONFIG_FILE,
+			Value:   ferium.DEFAULT_CONFIG_FILE,
 		},
 	},
 	Commands: []*cli.Command{
@@ -36,7 +37,7 @@ var mainCommand = &cli.Command{
 	},
 	Before: func(ctx context.Context, command *cli.Command) (context.Context, error) {
 		// Load configuration
-		config, err := godrinth.LoadConfig(command.String("config"))
+		config, err := ferium.LoadConfig(command.String("config"))
 		if err != nil {
 			return ctx, fmt.Errorf("failed to load configuration: %w", err)
 		}
