@@ -10,10 +10,10 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func getConfig(cmd *cli.Command) *godrinth.Config {
+func getConfig(cmd *cli.Command) godrinth.Config {
 	for _, c := range cmd.Lineage() {
 		if cfg, exists := c.Metadata["config"]; exists {
-			if config, ok := cfg.(*godrinth.Config); ok {
+			if config, ok := cfg.(godrinth.Config); ok {
 				return config
 			}
 		}
@@ -34,6 +34,7 @@ var mainCommand = &cli.Command{
 	Commands: []*cli.Command{
 		getCommand,
 		searchCommand,
+		newProfilesCommand(),
 	},
 	Before: func(ctx context.Context, command *cli.Command) (context.Context, error) {
 		// Load configuration

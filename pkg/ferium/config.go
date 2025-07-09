@@ -12,8 +12,10 @@ import (
 var DEFAULT_CONFIG_FILE = path.Join(xdg.ConfigHome, "ferium", "config.json")
 
 type config struct {
-	activeProfile int       `json:"active_profile"`
-	profiles      []profile `json:"profiles"`
+	data struct {
+		ActiveProfile int       `json:"active_profile"`
+		Profiles      []profile `json:"profiles"`
+	}
 }
 
 type profile struct {
@@ -22,6 +24,10 @@ type profile struct {
 	GameVersion string `json:"game_version"`
 	ModLoader   string `json:"mod_loader"`
 	Mods        []mod  `json:"mods"`
+}
+
+func (p *profile) GetName() string {
+	return p.Name
 }
 
 type mod struct {
@@ -33,10 +39,10 @@ type mod struct {
 	CheckGameVersion bool `json:"check_game_version,omitempty"`
 }
 
-func (c *config) Profiles() []string {
-	profiles := make([]string, len(c.profiles))
-	for i, p := range c.profiles {
-		profiles[i] = p.Name
+func (c *config) Profiles() []godrinth.Profile {
+	profiles := make([]godrinth.Profile, len(c.data.Profiles))
+	for i, p := range c.data.Profiles {
+		profiles[i] = &p
 	}
 	return profiles
 }
@@ -54,7 +60,7 @@ func LoadConfig(path string) (godrinth.Config, error) {
 	defer func() { _ = fp.Close() }()
 
 	decoder := json.NewDecoder(fp)
-	err = decoder.Decode(&config)
+	err = decoder.Decode(&config.data)
 	if err != nil {
 		return nil, err
 	}

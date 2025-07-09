@@ -4,7 +4,7 @@ GODRINTH ?= ./build/godrinth
 all: clean build test
 
 build: enums
-	go build -o build/godrinth ./cmd/godrinth.go
+	go build -o build/godrinth ./cmd/...
 .PHONY: build
 
 clean:
@@ -18,6 +18,7 @@ test:
 	$(GODRINTH) search sodium
 	$(GODRINTH) get lithium
 	$(GODRINTH) get gvQqBUqZ
+	$(GODRINTH) profiles list
 
 LOCALBIN ?= $(shell pwd)/build/tools
 ## Location to install dependencies to

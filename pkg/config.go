@@ -1,5 +1,5 @@
 package godrinth
 
 type Config interface {
-	Profiles() []string
+	Profiles() []Profile
 }
